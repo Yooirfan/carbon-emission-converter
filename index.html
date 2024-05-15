@@ -52,4 +52,19 @@
         <button onclick="hitung()">Hitung</button>
         <div class="result">
             <p id="jumlahPohon">Jumlah Pohon yang Ditanam: </p>
-     
+            <p id="biaya">Biaya yang Dikeluarkan (IDR): </p>
+        </div>
+    </div>
+
+    <script>
+        function hitung() {
+            var emisi = document.getElementById("emisi").value;
+            var jumlahPohon = emisi * (3.557 / 85.36);
+            var biaya = jumlahPohon * 30000;
+
+            document.getElementById("jumlahPohon").innerHTML = "Jumlah Pohon yang Ditanam: " + jumlahPohon.toFixed(2);
+            document.getElementById("biaya").innerHTML = "Biaya yang Dikeluarkan (IDR): " + biaya.toFixed(2);
+        }
+    </script>
+</body>
+</html>
