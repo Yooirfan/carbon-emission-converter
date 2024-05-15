@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emisi Karbon ke Pohon dan Biaya</title>
+    <title>Pengelolaan Emisi Kertas</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
         .container {
-            max-width: 600px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             border: 1px solid #ccc;
@@ -20,10 +20,20 @@
         h1 {
             text-align: center;
         }
-        label, input {
-            display: block;
+        .section {
+            margin-bottom: 40px;
+        }
+        table {
             width: 100%;
-            margin-bottom: 10px;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
         }
         button {
             display: block;
@@ -46,16 +56,34 @@
 </head>
 <body>
     <div class="container">
-        <h1>Konversi Emisi Karbon</h1>
-        <label for="emisi">Emisi Karbon (kg CO2):</label>
-        <input type="number" id="emisi" name="emisi">
-        <button onclick="hitung()">Hitung</button>
-        <div class="result">
-            <p id="jumlahPohon">Jumlah Pohon yang Ditanam: </p>
-            <p id="biaya">Biaya yang Dikeluarkan (IDR): </p>
+        <h1>Program Pengelolaan dan Pengurangan Emisi Kertas</h1>
+
+        <!-- Bagian Grafik Penggunaan Kertas Tahunan -->
+        <div class="section" id="grafik">
+            <h2>Grafik Penggunaan Kertas Tahunan</h2>
+            <canvas id="paperUsageChart"></canvas>
+        </div>
+
+        <!-- Bagian Tabel Penggunaan Kertas per Departemen -->
+        <div class="section" id="data-departemen">
+            <h2>Data Penggunaan Kertas per Departemen</h2>
+            <div id="departmentTables"></div>
+        </div>
+
+        <!-- Bagian Kalkulator Konversi Emisi Karbon -->
+        <div class="section" id="konversi-emisi">
+            <h2>Konversi Emisi Karbon</h2>
+            <label for="emisi">Emisi Karbon (kg CO2):</label>
+            <input type="number" id="emisi" name="emisi">
+            <button onclick="hitung()">Hitung</button>
+            <div class="result">
+                <p id="jumlahPohon">Jumlah Pohon yang Ditanam: </p>
+                <p id="biaya">Biaya yang Dikeluarkan (IDR): </p>
+            </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         function hitung() {
             var emisi = document.getElementById("emisi").value;
@@ -65,6 +93,77 @@
             document.getElementById("jumlahPohon").innerHTML = "Jumlah Pohon yang Ditanam: " + jumlahPohon.toFixed(2);
             document.getElementById("biaya").innerHTML = "Biaya yang Dikeluarkan (IDR): " + biaya.toFixed(2);
         }
+
+        // Data dari file Excel
+        const data = {
+            // Tambahkan data dari file Excel di sini
+        };
+
+        // Fungsi untuk membuat grafik penggunaan kertas tahunan
+        function buatGrafik() {
+            var ctx = document.getElementById('paperUsageChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels, // Ganti dengan label dari data Excel
+                    datasets: [{
+                        label: 'Penggunaan Kertas (lembar)',
+                        data: data.usage, // Ganti dengan data penggunaan dari Excel
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Fungsi untuk membuat tabel penggunaan kertas per departemen
+        function buatTabel() {
+            var departmentTables = document.getElementById('departmentTables');
+            data.departments.forEach(department => {
+                var table = document.createElement('table');
+                var thead = document.createElement('thead');
+                var tbody = document.createElement('tbody');
+
+                // Buat header tabel
+                var headerRow = document.createElement('tr');
+                department.headers.forEach(header => {
+                    var th = document.createElement('th');
+                    th.innerText = header;
+                    headerRow.appendChild(th);
+                });
+                thead.appendChild(headerRow);
+
+                // Buat baris data
+                department.data.forEach(row => {
+                    var dataRow = document.createElement('tr');
+                    row.forEach(cell => {
+                        var td = document.createElement('td');
+                        td.innerText = cell;
+                        dataRow.appendChild(td);
+                    });
+                    tbody.appendChild(dataRow);
+                });
+
+                table.appendChild(thead);
+                table.appendChild(tbody);
+                departmentTables.appendChild(table);
+            });
+        }
+
+        // Panggil fungsi untuk membuat grafik dan tabel setelah halaman dimuat
+        window.onload = function() {
+            buatGrafik();
+            buatTabel();
+        };
     </script>
 </body>
 </html>
