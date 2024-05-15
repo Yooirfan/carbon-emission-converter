@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emisi Karbon ke Pohon dan Biaya</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+        }
+        label, input {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Konversi Emisi Karbon</h1>
+        <label for="emisi">Emisi Karbon (kg CO2):</label>
+        <input type="number" id="emisi" name="emisi">
+        <button onclick="hitung()">Hitung</button>
+        <div class="result">
+            <p id="jumlahPohon">Jumlah Pohon yang Ditanam: </p>
+            <p id="biaya">Biaya yang Dikeluarkan (IDR): </p>
+        </div>
+    </div>
+
+    <script>
+        function hitung() {
+            var emisi = document.getElementById("emisi").value;
+            var jumlahPohon = emisi * (3557 / 85.36);
+            var biaya = jumlahPohon * 30000;
+
+            document.getElementById("jumlahPohon").innerHTML = "Jumlah Pohon yang Ditanam: " + jumlahPohon.toFixed(2);
+            document.getElementById("biaya").innerHTML = "Biaya yang Dikeluarkan (IDR): " + biaya.toFixed(2);
+        }
+    </script>
+</body>
+</html>
